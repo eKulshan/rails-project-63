@@ -7,6 +7,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    autoloaded (2.4.0)
     json (2.7.1)
     language_server-protocol (3.17.0.3)
     minitest (5.20.0)
@@ -40,6 +41,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  autoloaded (~> 2.4)
   form_generator!
   minitest (~> 5.16)
   rake (~> 13.0)
