@@ -2,4 +2,7 @@ install:
 	bundle install
 
 tests:
-	bundle exec rake
+	bundle exec rake test
+
+lint:
+	bundle exec rubocop
