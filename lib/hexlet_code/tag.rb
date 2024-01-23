@@ -23,8 +23,15 @@ module HexletCode
       end
 
       def build(name, attrs = {})
-        attrs_string = attrs.empty? ? "" : attrs.map { |k, v| "#{k}=\"#{v}\"" }.join(" ").prepend(" ")
         tag = @@tags[name]
+        tag_attrs = tag[:default_attrs].merge(attrs)
+        attrs_string = if tag_attrs.empty?
+                         ""
+                       else
+                         tag_attrs.map do |k, v|
+                           "#{k}=\"#{v}\""
+                         end.join(" ").prepend(" ")
+                       end
         raise "Unknown tag - #{name}" unless tag
 
         case tag[:type]
