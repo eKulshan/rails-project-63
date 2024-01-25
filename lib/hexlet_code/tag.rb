@@ -42,7 +42,7 @@ module HexletCode
         type = attrs.fetch(:type, nil)
         value = attrs.fetch(:value, nil)
 
-        { name: name, type: type, value: value, **attrs.except(:name, :type, :value) }.compact
+        { name:, type:, value:, **attrs.except(:name, :type, :value) }.compact
       end
 
       def build(tag, attrs, presenter)

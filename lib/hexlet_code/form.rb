@@ -20,7 +20,7 @@ module HexletCode
       attrs[:value] = @struct.public_send(name)
       attrs[:name] = name
 
-      @inputs << { as: as, attrs: attrs }
+      @inputs << { as:, attrs: }
     end
 
     def submit(value = 'Save')
