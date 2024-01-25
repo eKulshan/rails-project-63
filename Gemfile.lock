@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    form_generator (0.1.0)
+    hexlet_code (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -42,7 +42,7 @@ PLATFORMS
 
 DEPENDENCIES
   autoloaded (~> 2.4)
-  form_generator!
+  hexlet_code!
   minitest (~> 5.16)
   rake (~> 13.0)
   rubocop (~> 1.21)

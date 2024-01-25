@@ -9,6 +9,7 @@ module HexletCode
       @attrs[:action] = url unless url.nil?
       @inputs = []
       @submit = nil
+      @presenter = attrs[:presenter] || HtmlPresenter
     end
 
     def input_tag_name(as)
@@ -26,31 +27,26 @@ module HexletCode
       @submit = value
     end
 
-    def build_inputs_string(presenter)
+    def build_inputs_string
       @inputs.map do |i|
-        input_label = Tag.build(:label, { for: i.dig(:attrs, :name) }, presenter) do
+        input_label = Tag.build(:label, { for: i.dig(:attrs, :name) }, @presenter) do
           i.dig(:attrs, :name).capitalize
         end.prepend("  ")
-        input = Tag.build_input(i, presenter).prepend("  ")
+        input = Tag.build_input(i, @presenter).prepend("  ")
         "#{input_label}\n#{input}"
-      end.join("\n")
-    end
-
-    def build_submit_string(presenter)
-      if @submit.nil?
-        ""
-      else
-        Tag.build(:input, { type: "submit", value: @submit },
-                  presenter).prepend("\n  ")
       end
     end
 
-    def to_s(presenter)
-      inputs_string = build_inputs_string(presenter)
-      submit_string = build_submit_string(presenter)
+    def build_submit_string
+      return nil if @submit.nil?
 
-      form_body = "#{inputs_string}#{submit_string}"
-      Tag.build(:form, @attrs, presenter) { form_body.empty? ? "" : "\n#{form_body}\n" }
+      Tag.build(:input, { type: "submit", value: @submit }, @presenter).prepend("  ")
+    end
+
+    def to_s
+      inputs = [*build_inputs_string, build_submit_string].compact
+      form_body = inputs.empty? ? "" : "\n#{inputs.join("\n")}\n"
+      Tag.build(:form, @attrs, @presenter) { form_body }
     end
   end
 end

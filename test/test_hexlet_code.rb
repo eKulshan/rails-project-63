@@ -21,6 +21,11 @@ class TestHexletCode < Minitest::Test
     assert_equal @fixtures["form_with_url"], actual
   end
 
+  def test_it_generates_form_with_additional_attributes
+    actual = HexletCode.form_for @user, url: "/profile", method: :get, class: "hexlet-form", &:submit
+    assert_equal @fixtures["form_with_additional_attributes"], actual
+  end
+
   def test_it_generates_form_with_input
     actual = HexletCode.form_for @user do |f|
       f.input :name
