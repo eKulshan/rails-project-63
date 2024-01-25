@@ -54,4 +54,22 @@ class TestHexletCode < Minitest::Test
       end
     end
   end
+
+  def test_it_generates_form_with_submit
+    actual = HexletCode.form_for @user do |f|
+      f.input :name
+      f.input :job
+      f.submit
+    end
+    assert_equal @fixtures["form_with_submit"], actual
+  end
+
+  def test_it_generates_form_with_submit_value
+    actual = HexletCode.form_for @user do |f|
+      f.input :name
+      f.input :job
+      f.submit "Wow"
+    end
+    assert_equal @fixtures["form_with_submit_value"], actual
+  end
 end

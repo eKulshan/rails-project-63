@@ -8,6 +8,7 @@ module HexletCode
       @attrs = attrs
       @attrs[:action] = url unless url.nil?
       @inputs = []
+      @submit = nil
     end
 
     def input_tag_name(as)
@@ -21,10 +22,21 @@ module HexletCode
       @inputs << { as: as, attrs: attrs }
     end
 
+    def submit(value = "Save")
+      @submit = value
+    end
+
     def to_s(presenter)
       inputs_string = @inputs.map { |i| Tag.build_input(i, presenter).prepend("  ") }.join("\n")
+      submit_string = if @submit.nil?
+                        ""
+                      else
+                        Tag.build(:input, { type: "submit", value: @submit },
+                                  presenter).prepend("\n  ")
+                      end
 
-      Tag.build(:form, @attrs, presenter) { inputs_string.empty? ? "" : "\n#{inputs_string}\n" }
+      form_body = "#{inputs_string}#{submit_string}"
+      Tag.build(:form, @attrs, presenter) { form_body.empty? ? "" : "\n#{form_body}\n" }
     end
   end
 end
