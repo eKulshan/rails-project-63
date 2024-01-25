@@ -3,7 +3,7 @@
 require_relative "lib/hexlet_code/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "form_generator"
+  spec.name = "hexlet_code"
   spec.version = HexletCode::VERSION
   spec.authors = ["Evgenii Kulshan"]
   spec.email = ["eikulshan@gmail.com"]
