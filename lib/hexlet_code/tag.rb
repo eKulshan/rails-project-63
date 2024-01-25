@@ -3,45 +3,61 @@
 module HexletCode
   # Tag
   class Tag
+    @tags_map = {
+      br: { default_attrs: {} },
+      img: { default_attrs: {} },
+      div: { default_attrs: {} },
+      label: { type: "single", default_attrs: {} },
+      input: { type: "single", default_attrs: { type: "text" } },
+      textarea: { type: "double", default_attrs: { cols: 20, rows: 40 } },
+      form: { type: "double", default_attrs: { action: "#", method: "post" } }
+    }
     class << self
-      @@tags = {
-        br: { type: "single", default_attrs: {} },
-        img: { type: "single", default_attrs: {} },
-        input: { type: "single", default_attrs: { type: "text" } },
-        label: { type: "double", default_attrs: {} },
-        div: { type: "double", default_attrs: {} },
-        textarea: { type: "double", default_attrs: { rows: 50, cols: 50 } },
-        form: { type: "double", default_attrs: { action: "#", method: "post" } }
-      }
+      attr_reader :tags_map
 
-      def single?(name)
-        @@tags.dig(name.to_sym, :type) == "single"
+      def input_transform(as)
+        as == :text ? :textarea : :input
       end
 
-      def double?(name)
-        @@tags.dig(name.to_sym, :type) == "double"
+      def single_type?(tag)
+        @tags_map[tag][:type] == "single"
       end
 
-      def build(name, attrs = {})
-        tag = @@tags[name]
-        tag_attrs = tag[:default_attrs].merge(attrs)
-        attrs_string = if tag_attrs.empty?
-                         ""
-                       else
-                         tag_attrs.map do |k, v|
-                           "#{k}=\"#{v}\""
-                         end.join(" ").prepend(" ")
-                       end
-        raise "Unknown tag - #{name}" unless tag
+      def build_input(input, presenter)
+        tag = input_transform(input[:as])
+        attrs = build_input_attrs(tag, input[:attrs])
 
-        case tag[:type]
-        when "single"
-          "<#{name}#{attrs_string}>"
-        when "double"
-          "<#{name}#{attrs_string}>#{block_given? ? yield : ""}</#{name}>"
+        if single_type?(tag)
+          presenter.serialize(tag, attrs)
         else
-          raise "Unknown tag type - #{tag.type}"
+          body = attrs.delete(:value)
+          presenter.serialize(tag, attrs, body)
         end
+      end
+
+      def build_input_attrs(tag, attrs)
+        attrs = @tags_map[tag][:default_attrs].merge(attrs)
+
+        name = attrs.fetch(:name, nil)
+        type = attrs.fetch(:type, nil)
+        value = attrs.fetch(:value, nil)
+
+        { name: name, type: type, value: value, **attrs.except(:name, :type, :value) }.compact
+      end
+
+      def build(tag, attrs, presenter)
+        attrs = build_attrs(tag, attrs)
+
+        if single_type?(tag)
+          presenter.serialize(tag, attrs)
+        else
+          body = block_given? ? yield : ""
+          presenter.serialize(tag, attrs, body)
+        end
+      end
+
+      def build_attrs(tag, attrs)
+        @tags_map[tag][:default_attrs].merge(attrs)
       end
     end
   end
