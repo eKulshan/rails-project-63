@@ -7,10 +7,10 @@ module HexletCode
       br: { default_attrs: {} },
       img: { default_attrs: {} },
       div: { default_attrs: {} },
-      label: { type: "double", default_attrs: {} },
-      input: { type: "single", default_attrs: { type: "text" } },
-      textarea: { type: "double", default_attrs: { cols: 20, rows: 40 } },
-      form: { type: "double", default_attrs: { action: "#", method: "post" } }
+      label: { type: 'double', default_attrs: {} },
+      input: { type: 'single', default_attrs: { type: 'text' } },
+      textarea: { type: 'double', default_attrs: { cols: 20, rows: 40 } },
+      form: { type: 'double', default_attrs: { action: '#', method: 'post' } }
     }
     class << self
       attr_reader :tags_map
@@ -20,7 +20,7 @@ module HexletCode
       end
 
       def single_type?(tag)
-        @tags_map[tag][:type] == "single"
+        @tags_map[tag][:type] == 'single'
       end
 
       def build_input(input, presenter)
@@ -51,7 +51,7 @@ module HexletCode
         if single_type?(tag)
           presenter.serialize(tag, attrs)
         else
-          body = block_given? ? yield : ""
+          body = block_given? ? yield : ''
           presenter.serialize(tag, attrs, body)
         end
       end
