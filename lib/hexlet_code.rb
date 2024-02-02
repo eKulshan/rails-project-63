@@ -8,8 +8,8 @@ module HexletCode
   autoload(:Form, File.expand_path('hexlet_code/form', __dir__))
   autoload(:HtmlPresenter, File.expand_path('hexlet_code/html_presenter', __dir__))
 
-  def self.form_for(struct, **attrs)
-    form = Form.new(struct, **attrs)
+  def self.form_for(entity, **attrs)
+    form = Form.new(entity, attrs)
     yield(form) if block_given?
     form.to_s
   end

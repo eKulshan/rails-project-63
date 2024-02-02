@@ -3,10 +3,14 @@
 module HexletCode
   # Form
   class Form
-    def initialize(struct, url: nil, **attrs)
-      @struct = struct
-      @attrs = attrs
-      @attrs[:action] = url unless url.nil?
+    DEFAULT_ACTION = '#'
+    DEFAULT_METHOD = 'post'
+
+    def initialize(entity, attrs)
+      @entity = entity
+      @attrs = attrs.except(:url).merge(action: attrs.fetch(:url, DEFAULT_ACTION),
+                                        method: attrs.fetch(:method,
+                                                            DEFAULT_METHOD))
       @inputs = []
       @submit = nil
       @presenter = attrs[:presenter] || HtmlPresenter
@@ -17,7 +21,7 @@ module HexletCode
     end
 
     def input(name, as: nil, **attrs)
-      attrs[:value] = @struct.public_send(name)
+      attrs[:value] = @entity.public_send(name)
       attrs[:name] = name
 
       @inputs << { as:, attrs: }
@@ -28,11 +32,11 @@ module HexletCode
     end
 
     def build_inputs_string
-      @inputs.map do |i|
-        input_label = Tag.build(:label, { for: i.dig(:attrs, :name) }, @presenter) do
-          i.dig(:attrs, :name).capitalize
+      @inputs.map do |input|
+        input_label = Tag.build(:label, { for: input.dig(:attrs, :name) }, @presenter) do
+          input.dig(:attrs, :name).capitalize
         end.prepend('  ')
-        input = Tag.build_input(i, @presenter).prepend('  ')
+        input = Tag.build_input(input, @presenter).prepend('  ')
         "#{input_label}\n#{input}"
       end
     end
