@@ -12,5 +12,3 @@ gem 'minitest', '~> 5.21'
 gem 'rubocop', '~> 1.21'
 
 gem 'autoloaded', '~> 2.4'
-
-gem 'activesupport', '~> 7.1'
