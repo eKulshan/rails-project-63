@@ -1,59 +1,17 @@
 # frozen_string_literal: true
 
+require 'active_support/core_ext/string/inflections'
 module HexletCode
   # Inputs
   module Inputs
-    INPUTS_MAP = {
-      string: StringInput,
-      text: TextInput
-    }.freeze
-    # BaseInput
-    class BaseInput
-      attr_reader :label, :default_attrs
+    autoload(:BaseInput, File.expand_path('inputs/base_input', __dir__))
+    autoload(:StringInput, File.expand_path('inputs/string_input', __dir__))
+    autoload(:TextInput, File.expand_path('inputs/text_input', __dir__))
+    autoload(:SubmitInput, File.expand_path('inputs/submit_input', __dir__))
 
-      def initialize(attributes)
-        @attrs = self.class::DEFAULT_ATTRS.merge(attributes)
-      end
-
-      def tag
-        self.class::TAG
-      end
-
-      def to_s
-        label = HexletCode::Tag.build(:label, { for: @attrs[:name] }, HexletCode::HtmlPresenter) do
-          @attrs[:name].capitalize
-        end
-        tag = HexletCode::Tag.build(tag, @attrs, HexletCode::HtmlPresenter)
-
-        "  #{label}/n  #{tag}/n"
-      end
-    end
-
-    # StringInput
-    class StringInput < BaseInput
-      DEFAULT_ATTRS = { type: 'text' }.freeze
-      TAG = :input
-    end
-
-    # TextInput
-    class TextInput < BaseInput
-      DEFAULT_ATTRS = { cols: 40, rows: 20 }.freeze
-      TAG = :textarea
-    end
-
-    # SubmitInput
-    class SubmitInput
-      def initialize(value = 'Save')
-        @attrs = { type: 'submit', value: }
-      end
-
-      def tag
-        :input
-      end
-
-      def to_s
-        "  #{HexletCode::Tag.build(tag, @attrs, HexletCode::HtmlPresenter)}/n"
-      end
+    def self.select_input_class(tag)
+      klass_name = "HexletCode::Inputs::#{tag.capitalize}Input"
+      klass_name.constantize
     end
   end
 end
