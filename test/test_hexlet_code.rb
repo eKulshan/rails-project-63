@@ -7,7 +7,6 @@ class TestHexletCode < Minitest::Test
   end
 
   def setup
-    # @fixtures = read_fixtures
     @user = User.new name: 'rob', job: 'hexlet', gender: 'm'
   end
 

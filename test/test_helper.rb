@@ -8,5 +8,5 @@ require 'minitest/autorun'
 User = Struct.new(:name, :job, :gender, keyword_init: true)
 
 def read_fixture(name)
-  File.read "#{__dir__}/fixtures/#{name}.html"
+  File.read("#{__dir__}/fixtures/#{name}.html")
 end
