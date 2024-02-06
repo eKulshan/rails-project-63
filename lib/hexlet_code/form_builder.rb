@@ -26,7 +26,8 @@ module HexletCode
     end
 
     def submit(value = 'Save')
-      @form_body[:submit] = HexletCode::Inputs::SubmitInput.new value
+      submit_attributes = { tag: 'input', type: 'submit', value: }
+      @form_body[:submit] = { options: submit_attributes }
     end
   end
 end
