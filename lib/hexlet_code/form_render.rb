@@ -6,10 +6,24 @@ module HexletCode
     def self.render_html(builded_form)
       builded_form.form_body => {inputs:, submit:, form_options:}
 
+      rendered_inputs = render_inputs(inputs)
+      rendered_submit = render_submit(submit)
+
       HexletCode::Tag.build('form', form_options) do
-        form_body = "#{inputs.join}#{submit}"
+        form_body = "#{rendered_inputs}#{rendered_submit}"
         form_body.prepend("\n") unless form_body.empty?
       end
+    end
+
+    def self.render_inputs(inputs)
+      inputs.map(&:render).join
+    end
+
+    def self.render_submit(submit)
+      return '' if submit.nil?
+
+      submit[:options] => {tag:, **attributes}
+      "  #{HexletCode::Tag.build(tag, attributes)}\n"
     end
   end
 end

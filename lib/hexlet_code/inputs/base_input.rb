@@ -5,11 +5,7 @@ module HexletCode
     # BaseInput
     class BaseInput
       def initialize(attributes)
-        @attrs = self.class::DEFAULT_ATTRS.merge(attributes)
-      end
-
-      def tag_name
-        self.class::TAG
+        @attrs = self.class.default_attrs.merge(attributes)
       end
 
       def label
@@ -18,10 +14,8 @@ module HexletCode
         end
       end
 
-      def to_s
-        tag = HexletCode::Tag.build(tag_name, @attrs)
-
-        "  #{label}\n  #{tag}\n"
+      def self.default_attrs
+        {}
       end
     end
   end

@@ -4,13 +4,18 @@ module HexletCode
   module Inputs
     # TextInput
     class TextInput < HexletCode::Inputs::BaseInput
-      DEFAULT_ATTRS = { cols: 20, rows: 40 }.freeze
-      TAG = 'textarea'
+      TAG_NAME = 'textarea'
+      COLS = 20
+      ROWS = 40
 
-      def to_s
-        tag = HexletCode::Tag.build(tag_name, @attrs.except(:value)) { @attrs[:value] }
+      def render
+        tag = HexletCode::Tag.build(TAG_NAME, @attrs.except(:value)) { @attrs[:value] }
 
         "  #{label}\n  #{tag}\n"
+      end
+
+      def self.default_attrs
+        { cols: COLS, rows: ROWS }
       end
     end
   end
