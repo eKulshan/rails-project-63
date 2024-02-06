@@ -3,7 +3,7 @@
 module HexletCode
   module Inputs
     # TextInput
-    class TextInput < HexletCode::Inputs::BaseInput
+    class TextInput < BaseInput
       TAG_NAME = 'textarea'
       COLS = 20
       ROWS = 40

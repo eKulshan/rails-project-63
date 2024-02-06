@@ -3,7 +3,7 @@
 module HexletCode
   module Inputs
     # StringInput
-    class StringInput < HexletCode::Inputs::BaseInput
+    class StringInput < BaseInput
       TAG_NAME = 'input'
 
       def render
